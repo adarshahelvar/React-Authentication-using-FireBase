@@ -18,33 +18,43 @@ const submitHandler = (event) => {
   const enterwdEmail = emailInputRef.current.value;
   const enterwdPassword = passwordInputRef.current.value;
 
-  if(isLogin){
-
+  let url;
+  if(isLogin){  // login is there in video 307 udemy       
+    url = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAGPj6SmSbjg6eVTnC8ofI_9R1HWNfd3cQ'
   }else {
-    fetch('https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAGPj6SmSbjg6eVTnC8ofI_9R1HWNfd3cQ',{         // process given in video 305(udemy)
-      method: 'POST',
-      body: JSON.stringify({
-        email:enterwdEmail,
-        password:enterwdPassword,
-        returnSecureToken: true
-      }),
-      headers:{
-        'Content-Type': 'application/json'
-      }
-    }
-    ) .then(res=>{
-        if(res.ok){
-        }else{
-         return res.json().then (data=>{
-          let errorMessage = 'Authentication failed';
-          if(data && data.error && data.error.message){
-            errorMessage = data.error.message ; 
-          }
-          alert(errorMessage)
-          })
-        }
-    })
+    url = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAGPj6SmSbjg6eVTnC8ofI_9R1HWNfd3cQ';
+
   }
+  fetch(url,{         // process given in video 305(udemy)
+  method: 'POST',
+  body: JSON.stringify({
+    email:enterwdEmail,
+    password:enterwdPassword,
+    returnSecureToken: true
+  }),
+  headers:{
+    'Content-Type': 'application/json'
+  }
+}
+) .then(res=>{
+    if(res.ok){
+      return res.json();
+    }else{
+     return res.json().then (data=>{
+      let errorMessage = 'Authentication failed';
+      if(data && data.error && data.error.message){
+        errorMessage = data.error.message ; 
+      }
+      throw new Error(errorMessage);
+      })
+    }
+})
+.then(data => {
+  console.log(data);
+})
+.catch((err) => {
+  alert(err.Message)
+})
 }
 
   return (
