@@ -36,8 +36,11 @@ const submitHandler = (event) => {
         if(res.ok){
         }else{
          return res.json().then (data=>{
-            //show error
-            console.log(data);
+          let errorMessage = 'Authentication failed';
+          if(data && data.error && data.error.message){
+            errorMessage = data.error.message ; 
+          }
+          alert(errorMessage)
           })
         }
     })
