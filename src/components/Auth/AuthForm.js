@@ -34,7 +34,6 @@ const submitHandler = (event) => {
     }
     ) .then(res=>{
         if(res.ok){
-
         }else{
          return res.json().then (data=>{
             //show error
